@@ -29,15 +29,155 @@ Step 7: Save and run the application.
 ```
 /*
 Program to play and control the audio file”.
-Developed by:
-Registeration Number :
+Developed by: VD NATCHATHIRA 
+Registeration Number : 212224230178
 */
 ```
+## MainActivity.java
+```
+package com.example.simpleaudioplayer;
 
+import androidx.appcompat.app.AppCompatActivity;
+import android.media.MediaPlayer;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    private MediaPlayer mediaPlayer;
+    private Button btnPlay, btnPause, btnStop;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Initialize buttons
+        btnPlay = findViewById(R.id.btnPlay);
+        btnPause = findViewById(R.id.btnPause);
+        btnStop = findViewById(R.id.btnStop);
+
+        // Create MediaPlayer
+        mediaPlayer = MediaPlayer.create(this, R.raw.audio);
+        
+        // If using assets folder instead, use:
+        // mediaPlayer = new MediaPlayer();
+        // try {
+        //     mediaPlayer.setDataSource("file:///android_asset/audio.mp3");
+        //     mediaPlayer.prepare();
+        // } catch (Exception e) {
+        //     e.printStackTrace();
+        // }
+
+        // PLAY Button
+        btnPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+                    mediaPlayer.start();
+                    showToast("Playing audio...");
+                }
+            }
+        });
+
+        // PAUSE Button
+        btnPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                    mediaPlayer.pause();
+                    showToast("Audio paused");
+                }
+            }
+        });
+
+        // STOP Button
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mediaPlayer != null) {
+                    if (mediaPlayer.isPlaying()) {
+                        mediaPlayer.stop();
+                    }
+                    mediaPlayer.reset();
+                    try {
+                        mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.audio);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    showToast("Audio stopped");
+                }
+            }
+        });
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+        }
+    }
+}
+```
+## Activity_main.xml
+```
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Simple Audio Player"
+        android:textSize="20sp"
+        android:layout_marginBottom="30dp"/>
+
+    <Button
+        android:id="@+id/btnPlay"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:text="PLAY"
+        android:textSize="16sp"
+        android:layout_margin="10dp"/>
+
+    <Button
+        android:id="@+id/btnPause"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:text="PAUSE"
+        android:textSize="16sp"
+        android:layout_margin="10dp"/>
+
+    <Button
+        android:id="@+id/btnStop"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:text="STOP"
+        android:textSize="16sp"
+        android:layout_margin="10dp"/>
+
+</LinearLayout>
+```
 ## OUTPUT
+## Play
+<img width="818" height="484" alt="image" src="https://github.com/user-attachments/assets/25b65ccb-c5f7-4681-b0b9-19bd842a69a1" />
 
+## pause
+<img width="818" height="482" alt="image" src="https://github.com/user-attachments/assets/1bca94b0-953d-4624-bce9-34e954832701" />
 
-
+## Stop
+<img width="816" height="485" alt="image" src="https://github.com/user-attachments/assets/f5120a45-2036-493f-89c7-3123fb7ec8a5" />
 
 ## RESULT
-   Thus a simple application, to play and control the audio file and to perfrom the start,pause and stop opeartion in Android Studio is developed and executed successfully.
+Thus a simple application, to play and control the audio file and to perfrom the start,pause and stop opeartion in Android Studio is developed and executed successfully.
